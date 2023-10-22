@@ -1,0 +1,26 @@
+{
+    "C_Documents": {
+        "destination": "F:/CDocuments_backup",
+        "exclude_dirs": [
+            "C:/Users/user1/Documents/Portables",
+            "C:/Users/user1/Documents/lyrics",
+            "C:/Users/user1/Documents/tmp",
+            "C:/Users/user1/Documents/R",
+            "C:/Users/user1/Documents/QGIS",
+            "C:/Users/user1/Documents/.ipynb_checkpoints"
+        ],
+        "source": "C:/Users/user1/Documents"
+    },
+    "E_SSD": {
+        "destination": "F:/E_BACKUP",
+        "exclude_dirs": [
+        ],
+        "source": "E:/"
+    },
+    "mock": {
+        "destination": "F:/tmp",
+        "exclude_dirs": [
+        ],
+        "source": "C:/Users/user1/Documents/DEV/python3/util/test"
+    }
+}

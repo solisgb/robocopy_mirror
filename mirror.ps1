@@ -77,6 +77,12 @@ foreach ($directory in $directories) {
     }
 }
 
+if ($ifaults -gt 0){
+    "`nRemove non-existent directories from $jsonfile_name"
+    exit
+}
+
+
 if ($exclude_dirs.Count -gt 0){
     $xd_opt = @("/XD", $exclude_dirs)
 } else {

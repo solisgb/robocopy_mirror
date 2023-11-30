@@ -1,8 +1,8 @@
 ﻿Clear-Host
 
 #configuration file
-$jsonfile_name = "robocopy_mirror_projects.json"
-$logFilePath = "robocopy_log.txt"
+$jsonfile_name = "mirror_projects.json"
+$logFilePath = "mirror_log.txt"
 
 # Read the JSON file
 try {
@@ -13,7 +13,11 @@ catch {
     exit
 }
 
-Write-Host "`nSaved directories to be copied as mirrors"
+Write-Host "Makes a mirror copy of a directory." 
+Write-Host "The names of the files copied or deleted in the destination are saved in $logFilePath"
+Write-Host "If you want to copy other directories, add them in the file $jsonfile_name"
+
+Write-Host "`nDirectories to mirror in $jsonfile_name"
 # Iterate through the keys and display source and destination attributes
 foreach ($key in $jsonContent.PSObject.Properties) {
     Write-Host "Key: $($key.Name) ,  Source: $($key.Value.source) ,  Destination: $($key.Value.destination)"
@@ -34,7 +38,6 @@ Clear-Host
 # Read the JSON file again
 $jsonContent = Get-Content -Path $jsonfile_name | ConvertFrom-Json
 
-# Check if the specified key exists in the JSON file
 if ($jsonContent.PSObject.Properties[$selectedKey]) {
     $selectedItem = $jsonContent.$selectedKey
 
@@ -60,6 +63,7 @@ if ($jsonContent.PSObject.Properties[$selectedKey]) {
 }
 
 # Test if the paths exist and and are directories
+Write-Host "`nChecking directories."
 $directories = @($source, $destination)
 if ($exclude_dirs.Count -gt 0) {
     $directories = @($source, $destination) + $exclude_dirs
@@ -67,7 +71,7 @@ if ($exclude_dirs.Count -gt 0) {
 $ifaults = 0
 foreach ($directory in $directories) {
     if (Test-Path -Path $directory -PathType Container) {
-        #Write-Host "Directory '$directory' exists and is a directory."
+        # Write-Host "Directory '$directory' exists and is a directory."
     } elseif (Test-Path -Path $directory) {
         Write-Host "Path '$directory' exists but is not a directory."
         $ifaults += 1
@@ -78,7 +82,7 @@ foreach ($directory in $directories) {
 }
 
 if ($ifaults -gt 0){
-    "`nRemove non-existent directories from $jsonfile_name"
+    Write-Host "`nRemove non-existent directories from $jsonfile_name and try again."
     exit
 }
 
@@ -98,7 +102,7 @@ Write-Host "Other. Quit the script."
 # Ask to continue with the execution of the script
 $action = Read-Host -Prompt "`nPress the selected option"
 
-$base_options = "/MIR", "/R:1", "/W:1", "/NDL"
+$base_options = "/MIR", "/R:1", "/W:1", "/np", "/NDL"
 
 if ($action -eq "1") {
     robocopy $source $destination $base_options $xd_opt /L /LOG:$logFilePath

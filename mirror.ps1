@@ -111,6 +111,8 @@ elseif ($action -eq "2") {
     robocopy $source $destination $base_options $xd_opt /LOG:$logFilePath
 }
 else {
-    Write-Host "`nEjecución finalizada por el usuario."
+    Write-Host "`nTask cancelled by the user."
     exit
 }
+
+Write-Host "`nTask completed successfully."
